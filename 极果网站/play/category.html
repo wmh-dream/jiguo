@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/kw.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/doT.min.js"></script>
+    <style>
+        header {
+            width: 100%;
+            height: 77px;
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+    </header>
+    <!-- 内容板块 -->
+    <!-- 发现酷玩nav -->
+    <section class="warp">
+        <h1>发现酷玩</h1>
+        <div class="kw-nav">
+            <a href="index.html">最新</a>
+            <a href="hotest.html">最热</a>
+            <a href="#" class="nav-light">品类</a>
+        </div>
+    </section>
+    <!-- 商品展示 -->
+    <section class="show-goods">
+        <div class="goods-box">
+            <ul class="goods-list3">
+                <!-- <li>
+                    <dl>
+                        <dt>生活</dt>
+                        <dd>
+                            <div class="goods-icons">
+                                <img src="../img/cat/cat_1.png" alt="">
+                                <p>空气净化器 （21）</p>
+                            </div>
+                        </dd>
+                        <dd>
+                            <p>电视 （21）</p>
+                        </dd>
+                    </dl>
+                </li> -->
+            </ul>
+            <div class="load-more">
+                <a href="javascript:void(0)"><span></span> 点击加载更多</a>
+            </div>
+        </div>
+    </section>
+    <!-- dot 渲染数据 -->
+
+    <script id="interpolationtmpl" type="text/x-dot-template">
+        {{~it:value}}
+        <li>
+            <dl>
+                <dt>{{=value.title}}</dt>
+                <dd>
+                    {{~value.good_icons:val}}
+                    <div class="goods-icons">
+                        <img src={{=val.img}} alt="">
+                        <p>{{=val.text}}</p>
+                    </div>
+                    {{~}}
+                </dd>
+                <dd>
+                    {{~value.p_text:value1}}
+                    <p>{{=value1.t}}</p>
+                    {{~}}
+                </dd>
+                </dl>
+            </li> 
+        {{~}}
+    </script>
+    <script>
+        $(function () {
+            $.ajax({
+                url: "./json/kw.json",
+                success: function (res) {
+                    console.log(res);
+                    var innerText = doT.template($("#interpolationtmpl").text());
+                    $(".goods-list3").html(innerText(res[2]));
+                }
+            });
+            $('.load-more a').text('没有更多啦~').css({
+                                'color': '#a3a3a3',
+                                'background': '#f7f7f7'
+                            })
+        })
+    </script>
+</body>
+
+</html>
